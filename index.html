@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Site settings (name, logo, email) live in config.js -->
+<script src="config.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0d10" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Fourai">
+<meta property="og:description" content="A software company building platforms that bring people together. Something exciting is on the way.">
+<meta property="og:type" content="website">
+<link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect width='28' height='28' rx='7' fill='%230b0d10'/%3E%3Cpath d='M9 10 14 16 19 10' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='9' cy='10' r='2.2' fill='%23fff'/%3E%3Ccircle cx='19' cy='10' r='2.2' fill='%23fff'/%3E%3Ccircle cx='14' cy='18' r='2.6' fill='%23018bf2'/%3E%3C/svg%3E">
+<title>Fourai</title>
+<meta name="description" content="Fourai is a software company building platforms that bring people together. Something exciting is on the way.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
+<style>
+/* Layout: crisp single column — white ground, hairline rules, tight radii, outlined panels, a precise line-drawn node diagram in the hero. Light (white) and dark (charcoal) themes. Colours from the Fourai logo: near-black ink, electric blue accent, cyan highlight, cool grays. */
+:root {
+  --bg: #ffffff;
+  --panel: #f6f8fa;
+  --field: #ffffff;
+  --ink: #0b0d10;
+  --muted: #57606b;
+  --line: #e3e7ec;
+  --grid: #edf0f4;
+  --accent: #0b6fd6;      /* logo blue, deepened slightly so text links stay readable */
+  --accent-soft: #e5f0fc;
+  --on-accent: #ffffff;
+  --peach: #00b4f5;       /* logo cyan highlight */
+  --peach-soft: #e2f6fe;
+  --clay-ink: #0a4f9c;
+  --glow: rgba(1, 139, 242, 0.45);
+
+  --f-sans: "Geist", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+
+  --h1: clamp(2.5rem, 6vw, 4.5rem);
+  --h2: clamp(1.9rem, 3.8vw, 2.9rem);
+  --lede: clamp(1.0625rem, 1.4vw, 1.25rem);
+  --wrap: 70rem;
+  color-scheme: light;
+  --blend: multiply;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0d10; --panel: #12151a; --field: #161a20; --ink: #eef2f6; --muted: #98a2ae; --line: #232931; --grid: #181c22;
+    --accent: #3aa8ff; --accent-soft: #0f2742; --on-accent: #06121f; --peach: #3fd0ff; --peach-soft: #0d2833; --clay-ink: #8fd3ff; --glow: rgba(58, 168, 255, 0.55);
+    --blend: screen; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0d10; --panel: #12151a; --field: #161a20; --ink: #eef2f6; --muted: #98a2ae; --line: #232931; --grid: #181c22;
+  --accent: #3aa8ff; --accent-soft: #0f2742; --on-accent: #06121f; --peach: #3fd0ff; --peach-soft: #0d2833; --clay-ink: #8fd3ff; --glow: rgba(58, 168, 255, 0.55);
+  --blend: screen; color-scheme: dark;
+}
+.blend { mix-blend-mode: var(--blend); }
+.glow { filter: drop-shadow(0 0 10px var(--glow)) drop-shadow(0 0 22px var(--glow)); }
+.btn.solid:hover, nav a.pill:hover { box-shadow: 0 0 0 4px var(--accent-soft), 0 0 18px var(--glow); }
+.theme-btn { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; }
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn svg { width: 18px; height: 18px; }
+.theme-btn .sun { display: none; }
+:root[data-theme="dark"] .theme-btn .sun { display: block; }
+:root[data-theme="dark"] .theme-btn .moon { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .theme-btn .sun { display: block; } :root:not([data-theme="light"]) .theme-btn .moon { display: none; } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-sans); font-size: 1rem; line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; }
+p { margin: 0; }
+
+.wrap {
+  max-width: var(--wrap); margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (min-width: 760px) { .wrap { padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); } }
+
+.label { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--f-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.label::before { content: ""; width: 6px; height: 6px; background: var(--accent); }
+
+/* Header */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem; }
+.brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--ink); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.02em; }
+.mark { width: 28px; height: 28px; flex: none; }
+.logo-img { height: 40px; width: auto; max-width: 200px; object-fit: contain; flex: none; display: block; }
+nav ul { list-style: none; display: flex; gap: 1.75rem; margin: 0; padding: 0; align-items: center; }
+nav a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.9375rem; }
+nav a:hover { color: var(--ink); }
+nav a.pill { color: var(--on-accent); background: var(--ink); padding: 0.45rem 0.9rem; border-radius: 8px; font-weight: 500; }
+nav a.pill:hover { color: var(--on-accent); background: var(--accent); }
+@media (max-width: 600px) { nav li.opt { display: none; } }
+
+/* Hero */
+.hero .wrap { padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5.5rem); display: grid; gap: 3rem; align-items: center; }
+@media (min-width: 880px) { .hero .wrap { grid-template-columns: 1.4fr 1fr; } }
+.hero-copy { display: grid; gap: 1.5rem; justify-items: start; min-width: 0; }
+.hero h1 { font-size: var(--h1); font-weight: 600; line-height: 1.02; letter-spacing: -0.045em; max-width: 14ch; }
+.hero h1 span { color: var(--accent); }
+.hero p { font-size: var(--lede); color: var(--muted); max-width: 34rem; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 500; font-size: 0.9375rem; text-decoration: none; border: 1px solid transparent; transition: background-color .15s ease, border-color .15s ease; }
+.btn.solid { background: var(--ink); color: var(--bg); }
+.btn.solid:hover { background: var(--accent); color: var(--on-accent); }
+.btn.soft { background: var(--bg); color: var(--ink); border-color: var(--line); }
+.btn.soft:hover { border-color: var(--ink); }
+
+.shape { width: 100%; max-width: 400px; justify-self: center; aspect-ratio: 1; height: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg); }
+
+/* Teaser */
+.next .wrap { padding-block: clamp(1rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6rem); display: grid; gap: 1.5rem; }
+.teaser { display: grid; gap: 1.25rem; justify-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(2rem, 6vw, 4rem); }
+.teaser h2 { font-size: var(--h2); line-height: 1.08; letter-spacing: -0.04em; max-width: 18ch; }
+.teaser p { color: var(--muted); font-size: var(--lede); max-width: 36rem; }
+.dots { display: flex; gap: 0.5rem; }
+.dots span { width: 8px; height: 8px; border-radius: 1px; background: var(--accent); opacity: .4; animation: breathe 1.6s ease-in-out infinite; }
+.dots span:nth-child(2) { animation-delay: .25s; background: var(--peach); }
+.dots span:nth-child(3) { animation-delay: .5s; }
+@keyframes breathe { 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .dots span { animation: none; opacity: 1; } }
+
+/* Registry (shown once products are announced) */
+.filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip { font: 600 0.8125rem var(--f-sans); padding: 0.4rem 0.85rem; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--muted); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-soft); }
+.registry { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 1rem; }
+.sol { background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 1.5rem; display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 0.75rem; min-width: 0; }
+.sol-top { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+.sol .cat { font-size: 0.8125rem; color: var(--muted); }
+.sol h3 { font-size: 1.375rem; letter-spacing: -0.02em; }
+.sol p { color: var(--muted); }
+.sol ul.feat { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.375rem; align-content: start; }
+.sol ul.feat li { font-size: 0.8125rem; padding: 0.2rem 0.6rem; border-radius: 999px; background: var(--panel); color: var(--muted); }
+.sol-foot { padding-top: 0.75rem; border-top: 1px solid var(--line); font-size: 0.9375rem; }
+.sol-foot a { font-weight: 600; text-decoration: none; }
+.sol-foot .soon { color: var(--muted); }
+.sol.open { border-style: dashed; }
+.status { font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.65rem; border-radius: 999px; background: var(--panel); color: var(--muted); white-space: nowrap; }
+.status.building { background: var(--peach-soft); color: var(--clay-ink); }
+.status.pilot, .status.live { background: var(--accent-soft); color: var(--accent); }
+
+/* Principles */
+.principles-sec .wrap { padding-block: clamp(3rem, 7vw, 5rem); display: grid; gap: 2.5rem; border-top: 1px solid var(--line); }
+.sec-head { display: grid; gap: 0.75rem; }
+.sec-head h2 { font-size: var(--h2); line-height: 1.08; letter-spacing: -0.04em; }
+.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.principles li { display: grid; gap: 0.5rem; align-content: start; padding: 1.5rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.principles .ic { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--accent); margin-bottom: 0.75rem; }
+.principles .ic svg { width: 20px; height: 20px; }
+.principles strong { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; }
+.principles span.txt { color: var(--muted); font-size: 0.9375rem; }
+
+/* Contact */
+.contact .wrap { padding-block: 0 clamp(3.5rem, 8vw, 6rem); }
+.contact-panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: clamp(2rem, 6vw, 4rem); display: grid; gap: 2rem; align-items: center; }
+@media (min-width: 880px) { .contact-panel { grid-template-columns: 1.1fr 1fr; } }
+.contact-panel .sec-head p { color: var(--muted); font-size: var(--lede); max-width: 30rem; }
+.contact-side { display: grid; gap: 1rem; min-width: 0; }
+.email-box { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; background: var(--field); border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.5rem 0.5rem 1rem; }
+.email-box code { font-family: var(--f-mono); font-weight: 500; font-size: 1.0625rem; user-select: all; overflow-wrap: anywhere; flex: 1 1 12rem; min-width: 0; color: var(--ink); }
+.email-box button { font: 600 0.875rem var(--f-sans); padding: 0.55rem 1rem; border-radius: 6px; border: 0; background: var(--ink); color: var(--bg); cursor: pointer; }
+.email-box button:hover { background: var(--accent); color: var(--on-accent); }
+.contact ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.5rem; color: var(--muted); font-size: 0.9375rem; }
+.contact li { display: flex; gap: 0.6rem; align-items: baseline; }
+.contact li::before { content: ""; width: 6px; height: 6px; background: var(--accent); flex: none; transform: translateY(-2px); }
+
+footer .wrap { padding-block: 1.75rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: 0.875rem; border-top: 1px solid var(--line); }
+footer a { color: var(--muted); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+
+/* Base reset for standalone hosting */
+body { margin: 0; }
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
+</style>
+<script>try{var t=localStorage.getItem("kc-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#top" id="brand" aria-label="Fourai home">
+      <img class="logo-img" id="logo-img" alt="" hidden>
+      <svg class="mark" id="logo-default" viewBox="0 0 28 28" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="27" height="27" rx="7" fill="var(--ink)"/>
+        <path d="M9 10 14 16 19 10" stroke="var(--bg)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="10" r="2.2" fill="var(--bg)"/>
+        <circle cx="19" cy="10" r="2.2" fill="var(--bg)"/>
+        <circle cx="14" cy="18" r="2.6" fill="var(--accent)"/>
+      </svg>
+      <span data-name id="brand-name">Fourai</span>
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li class="opt"><a href="#next">What's next</a></li>
+        <li class="opt"><a href="#principles">How we work</a></li>
+        <li><a class="pill" href="#contact">Contact</a></li>
+        <li><button type="button" class="theme-btn" id="theme-btn" aria-label="Switch between light and dark">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="label">Software studio</span>
+        <h1>Building software that brings people <span>together.</span></h1>
+        <p><span data-name>Fourai</span> is a software company creating platforms and applications that make it easier for people to connect. We're working on something new, and we can't wait to share it.</p>
+        <div class="cta-row">
+          <a class="btn solid" href="#next">See what's next</a>
+          <a class="btn soft" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <svg class="shape" viewBox="0 0 400 400" aria-hidden="true" shape-rendering="geometricPrecision">
+        <defs><pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="var(--grid)" stroke-width="1"/></pattern></defs>
+        <rect width="400" height="400" fill="url(#g)"/>
+        <g stroke="var(--ink)" stroke-width="1.25" fill="none">
+          <line x1="200" y1="200" x2="80" y2="120"/>
+          <line x1="200" y1="200" x2="320" y2="80"/>
+          <line x1="200" y1="200" x2="320" y2="280"/>
+          <line x1="200" y1="200" x2="120" y2="320"/>
+          <line x1="80" y1="120" x2="120" y2="320" stroke="var(--line)"/>
+          <line x1="320" y1="80" x2="320" y2="280" stroke="var(--line)"/>
+          <line x1="120" y1="320" x2="320" y2="280" stroke="var(--line)"/>
+        </g>
+        <circle cx="200" cy="200" r="44" fill="none" stroke="var(--line)" stroke-width="1"/>
+        <circle class="glow" cx="200" cy="200" r="18" fill="var(--accent)"/>
+        <g fill="var(--bg)" stroke="var(--ink)" stroke-width="1.5">
+          <circle cx="80" cy="120" r="10"/>
+          <circle cx="320" cy="80" r="10"/>
+          <circle cx="320" cy="280" r="10"/>
+          <circle cx="120" cy="320" r="10"/>
+        </g>
+        <circle cx="320" cy="80" r="4" fill="var(--peach)"/>
+        <circle cx="120" cy="320" r="4" fill="var(--accent)"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="next" id="next">
+    <div class="wrap">
+      <div class="teaser" id="teaser">
+        <span class="label">In the works</span>
+        <h2>Something exciting is on the way.</h2>
+        <p>Our team is hard at work on new platforms and apps. We're keeping the details under wraps for now. Stay tuned.</p>
+        <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by stage" id="filters" hidden></div>
+      <div class="registry" id="registry" aria-live="polite" hidden></div>
+    </div>
+  </section>
+
+  <section class="principles-sec" id="principles">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="label">How we work</span>
+        <h2>Principles we build by</h2>
+      </div>
+      <ul class="principles">
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 19c.6-3 2.9-5 5.5-5s4.9 2 5.5 5M14.5 14.6c2.6-.6 5.2.9 6 4.4"/></svg></div>
+          <strong>Community first</strong>
+          <span class="txt">We design for helpful, respectful participation, with moderation tools built in from day one.</span>
+        </li>
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <strong>Safe and private by default</strong>
+          <span class="txt">We collect only the data a feature needs and protect members' accounts and conversations.</span>
+        </li>
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M6 18l2-2M16 8l2-2"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <strong>AI that assists</strong>
+          <span class="txt">Our AI handles repetitive work so people can spend their time on decisions and on each other.</span>
+        </li>
+        <li>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+          <strong>Open to everyone</strong>
+          <span class="txt">Free tiers wherever we can, and interfaces that meet WCAG 2.1 AA accessibility standards.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact-panel">
+        <div class="sec-head">
+          <span class="label">Contact</span>
+          <h2>Stay in touch</h2>
+          <p>Want to hear when we launch, or talk about a project? Drop us a line.</p>
+        </div>
+        <div class="contact-side">
+          <div class="email-box">
+            <code id="email">info@fourai.io</code>
+            <button type="button" id="copy-email">Copy</button>
+          </div>
+          <ul>
+            <li>Be the first to hear about our launch</li>
+            <li>Explore partnership opportunities</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> <span data-legal>Fourai LLC</span></span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+/*
+  PLATFORM REGISTRY
+  While this list is empty the page shows the "Something exciting is on the way" teaser.
+  Add a product to replace the teaser with product cards. Fields:
+    name     – product name
+    category – short label
+    summary  – one or two sentences on what it does and who it helps
+    features – a few short tags
+    status   – "discovery" | "building" | "pilot" | "live"
+    url      – link to the live product or its own page (leave "" until ready)
+*/
+const SOLUTIONS = [
+  // Example entry (uncomment and edit when ready to announce):
+  // { name: "Product name", category: "Short label", summary: "What it does.",
+  //   features: ["Tag", "Tag"], status: "live", url: "https://..." }
+];
+
+const STAGES = { discovery: "Discovery", building: "Building", pilot: "Pilot", live: "Live" };
+const registry = document.getElementById("registry");
+const filters = document.getElementById("filters");
+let active = "all";
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function card(s) {
+  const link = s.url
+    ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${s.status === "live" ? "Open " + esc(s.name) : "Learn more"} →</a>`
+    : `<span class="soon">${s.status === "live" ? "Link coming soon" : "Launching later"}</span>`;
+  const feats = (s.features || []).map(f => `<li>${esc(f)}</li>`).join("");
+  return `<article class="sol"><div class="sol-top"><span class="cat">${esc(s.category)}</span><span class="status ${s.status}">${STAGES[s.status]}</span></div><h3>${esc(s.name)}</h3><p>${esc(s.summary)}</p><ul class="feat">${feats}</ul><div class="sol-foot">${link}</div></article>`;
+}
+function render() {
+  const list = SOLUTIONS.filter(s => active === "all" || s.status === active);
+  registry.innerHTML = list.length ? list.map(card).join("")
+    : `<article class="sol open"><h3>Nothing at this stage yet</h3><p>Check back soon, or choose another stage.</p></article>`;
+}
+function buildFilters() {
+  const opts = [["all", "All"], ...Object.entries(STAGES)];
+  filters.innerHTML = opts.map(([k, v]) => {
+    const n = k === "all" ? SOLUTIONS.length : SOLUTIONS.filter(s => s.status === k).length;
+    return `<button type="button" class="chip" id="f-${k}" data-k="${k}" aria-pressed="${k === active}">${v} · ${n}</button>`;
+  }).join("");
+  filters.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    active = b.dataset.k;
+    filters.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x.dataset.k === active));
+    render();
+  }));
+}
+if (SOLUTIONS.length) {
+  document.getElementById("teaser").hidden = true;
+  filters.hidden = false; registry.hidden = false;
+  buildFilters(); render();
+}
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* Apply site settings from config.js */
+(() => {
+  const cfg = Object.assign({ name: "Fourai", legalName: "", logo: "", logoDark: "", favicon: "", showName: true, email: "" }, window.SITE_CONFIG || {});
+  const name = String(cfg.name || "").trim() || "Fourai";
+  const clean = x => String(x || "").trim();
+
+  document.querySelectorAll("[data-name]").forEach(el => { el.textContent = name; });
+  const legal = String(cfg.legalName || "").trim() || name;
+  document.querySelectorAll("[data-legal]").forEach(el => { el.textContent = legal; });
+  document.title = name;
+  document.getElementById("brand").setAttribute("aria-label", name + " home");
+  const og = document.querySelector('meta[property="og:title"]'); if (og) og.content = name;
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc) desc.content = desc.content.replace(/^\S+ is a software company/, name + " is a software company");
+  if (cfg.email) document.getElementById("email").textContent = cfg.email;
+  if (!cfg.showName) document.getElementById("brand-name").hidden = true;
+
+  const typeOf = src => ({ png: "image/png", svg: "image/svg+xml", jpg: "image/jpeg", jpeg: "image/jpeg", webp: "image/webp", ico: "image/x-icon" })[src.split("?")[0].split(".").pop().toLowerCase()] || "";
+  const fav = document.getElementById("favicon");
+  const setFav = src => { fav.href = src; fav.type = typeOf(src); };
+
+  /* Browser-tab icon: the favicon file if set and found, otherwise the header logo */
+  let favFixed = false;
+  if (clean(cfg.favicon)) {
+    const probe = new Image();
+    probe.onload = () => { favFixed = true; setFav(clean(cfg.favicon)); };
+    probe.src = clean(cfg.favicon);
+  }
+
+  /* Header logo: logoDark in dark mode (if set), otherwise logo.
+     If a file can't be found, try logo.png, then logo.svg, then keep the built-in mark. */
+  const root = document.documentElement;
+  const img = document.getElementById("logo-img");
+  img.alt = cfg.showName ? "" : name;
+  const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  let tries = [], i = 0;
+  img.onload = () => {
+    img.hidden = false;
+    document.getElementById("logo-default").style.display = "none";
+    if (!favFixed && !isDark()) setFav(img.getAttribute("src"));
+  };
+  img.onerror = () => { if (++i < tries.length) img.src = tries[i]; else { img.hidden = true; document.getElementById("logo-default").style.display = ""; } };
+  function showLogo() {
+    const first = isDark() && clean(cfg.logoDark) ? clean(cfg.logoDark) : clean(cfg.logo);
+    tries = [...new Set([first, clean(cfg.logo), "logo.png", "logo.svg"].filter(Boolean))]; i = 0;
+    if (img.getAttribute("src") !== tries[0]) img.src = tries[0];
+  }
+  showLogo();
+  new MutationObserver(showLogo).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", showLogo);
+})();
+
+/* Light / dark toggle (remembers the visitor's choice) */
+(() => {
+  const root = document.documentElement;
+  try { const saved = localStorage.getItem("kc-theme"); if (saved) root.dataset.theme = saved; } catch {}
+  document.getElementById("theme-btn").addEventListener("click", () => {
+    const isDark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = isDark ? "light" : "dark";
+    try { localStorage.setItem("kc-theme", root.dataset.theme); } catch {}
+  });
+})();
+
+document.getElementById("copy-email").addEventListener("click", e => {
+  const btn = e.currentTarget, text = document.getElementById("email").textContent;
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy", 1800); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("email")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Press Ctrl+C"; };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch { fallback(); }
+});
+</script>
+</body>
+</html>
